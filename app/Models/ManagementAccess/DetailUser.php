@@ -22,7 +22,7 @@ class DetailUser extends Model
     ];
 
     // declare fillable
-    protected $fillable [
+    protected $fillable = [
         'user_id',
         'type_user_id',
         'contact',

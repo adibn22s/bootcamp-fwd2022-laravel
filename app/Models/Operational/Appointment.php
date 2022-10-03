@@ -20,7 +20,7 @@ class Appointment extends Model
     ];
 
     // declare fillable
-    protected $fillable [
+    protected $fillable = [
         'doctor_id',
         'user_id',
         'consultation_id',

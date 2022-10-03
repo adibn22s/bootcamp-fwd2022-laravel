@@ -22,7 +22,7 @@ class DetailUser extends Model
     ];
 
     // declare fillable
-    protected $fillable [
+    protected $fillable = [
         'user_id',
         'role_id',
         'created_at',
@@ -35,5 +35,12 @@ class DetailUser extends Model
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
         return $this->belongsTo('app\Models\User.php','user_id','id');
+    }
+
+    // one to many
+    public function role()
+    {
+        // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
+        return $this->belongsTo('app\Models\ManagementAccess\Role.php','role_id','id');
     }
 }

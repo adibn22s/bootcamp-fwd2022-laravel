@@ -20,7 +20,7 @@ class ConfigPayment extends Model
     ];
 
     // declare fillable
-    protected $fillable [
+    protected $fillable = [
         'fee',
         'vat',
         'created_at',
