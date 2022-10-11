@@ -81,7 +81,7 @@ class User extends Authenticatable
     public function detail_user()
     {
         // 2 parameters (path models dan field foreign key)
-        return $this->hasOne('app\Models\ManagementAccess\DetailUser.php','detail_user_id');
+        return $this->hasOne('app\Models\ManagementAccess\DetailUser.php','user_id');
     }
 
     // one to many
