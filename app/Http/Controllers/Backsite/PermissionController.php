@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class PermissionController extends Controller
 {
-
-    /**
+     /**
      * Create a new controller instance.
      *
      * @return void
@@ -17,7 +16,6 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +23,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.dashboard.index');
+        return view('pages.backsite.management-access.permission.index');
     }
 
     /**
