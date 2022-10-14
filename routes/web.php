@@ -45,6 +45,9 @@ Route::group(['prefix' => 'backsite', 'as' => 'backsite.', 'middleware' => ['aut
 
     // dashboard
     Route::resource('dashboard', DashboardController::class);
+
+    // type_user
+    Route::resource('type_user', UserTypeController::class);
    
     // permission
     Route::resource('permission', PermissionController::class);

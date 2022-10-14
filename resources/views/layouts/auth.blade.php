@@ -13,13 +13,14 @@
       </head>
       <body>
 
+        @include('sweetalert::alert')
         
-            @yield('content')
+        @yield('content')
        
 
         @stack('before-script')
             @include('includes.frontsite.script')
-          @stack('after-script')
+        @stack('after-script')
 
           {{-- modals --}}
           {{-- if u have a modals put here --}}
