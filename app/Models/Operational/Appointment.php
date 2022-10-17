@@ -37,21 +37,21 @@ class Appointment extends Model
     public function doctor()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\Operational\doctor.php','doctor_id','id');
+        return $this->belongsTo('App\Models\Operational\doctor','doctor_id','id');
     }
 
     // one to many
     public function consultation()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\MasterData\Consultation.php','consultation_id','id');
+        return $this->belongsTo('App\Models\MasterData\Consultation','consultation_id','id');
     }
 
     // one to many
     public function user()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\User.php','user_id','id');
+        return $this->belongsTo('App\Models\User','user_id','id');
     }
 
     // one to one

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Responses\RegisterResponse;
+use App\Actions\Jetstream\AddTeamMember;
+use App\Actions\Jetstream\CreateTeam;
+use App\Actions\Jetstream\DeleteTeam;
 use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
@@ -38,6 +42,15 @@ class JetstreamServiceProvider extends ServiceProvider
     protected function configurePermissions()
     {
         Jetstream::defaultApiTokenPermissions(['read']);
+        Jetstream::removeTeamMembersUsing(RemoveTeamMember::class);
+        Jetstream::deleteTeamsUsing(DeleteTeam::class);
+        Jetstream::deleteUsersUsing(DeleteUser::class);
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
+
 
         Jetstream::permissions([
             'create',

@@ -3,7 +3,19 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// use everything here
+use Gate;
+use Auth;
+
+// use model here
+use App\Models\User;
+use App\Models\ManagementAccess\DetailUser;
+use App\Models\ManagementAccess\Permission;
+use App\Models\ManagementAccess\Role;
+use App\Models\MasterData\TypeUser;
 
 class UserController extends Controller
 {
@@ -24,7 +36,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.user.index');
+        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $user = User::orderBy('created_at', 'desc')->get();
+        $type_user = TypeUser::orderBy('name', 'asc')->get();
+        $roles = Role::all()->pluck('title', 'id');
+
+        return view('pages.backsite.management-access.user.index', compact('user', 'roles', 'type_user'));
     }
 
     /**
@@ -56,6 +74,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return abort(404);
     }
 
@@ -67,6 +87,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return abort(404);
     }
 
@@ -90,6 +112,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return abort(404);
     }
 }

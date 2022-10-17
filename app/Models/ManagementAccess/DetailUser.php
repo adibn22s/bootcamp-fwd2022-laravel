@@ -38,14 +38,14 @@ class DetailUser extends Model
     public function type_user()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\MasterData\TypeUser.php','type_user_id','id');
+        return $this->belongsTo('App\Models\MasterData\TypeUser','type_user_id','id');
     }
 
     // one to one
     public function user()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\User.php','user_id','id');
+        return $this->belongsTo('App\Models\User','user_id','id');
     }
     
 }

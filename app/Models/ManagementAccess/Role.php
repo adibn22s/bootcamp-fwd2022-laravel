@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Permission extends Model
+class Role extends Model
 {
     // use HasFactory;
     use SoftDeletes;
 
-    // Declare:table
+    // declare table
     public $table = 'role';
 
-    // this fiela must type date yyyy-mm-dd hh-mm-ss
+    // this field must type date yyyy-mm-dd hh:mm:ss
     protected $dates = [
         'created_at',
         'updated_at',
@@ -29,16 +29,28 @@ class Permission extends Model
         'deleted_at',
     ];
 
+    // many to many
+    public function user()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function permission()
+    {
+        return $this->belongsToMany('App\Models\ManagementAccess\Permission');
+    }
+
     // one to many
     public function role_user()
     {
-        // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->hasMany('app\Models\ManagementAccess\RoleUser.php','role_id');
+        // 2 parameter (path model, field foreign key)
+        return $this->hasMany('App\Models\ManagementAccess\RoleUser', 'role_id');
     }
 
     public function permission_role()
     {
-        // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->hasMany('app\Models\ManagementAccess\PermissionRole.php','role_id');
+        // 2 parameter (path model, field foreign key)
+        return $this->hasMany('App\Models\ManagementAccess\PermissionRole', 'role_id');
     }
+
 }

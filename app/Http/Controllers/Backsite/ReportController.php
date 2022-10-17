@@ -3,7 +3,15 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// use model here
+
+
+// use everything here
+use Gate;
+use Auth;
 
 class ReportController extends Controller
 {
@@ -24,6 +32,7 @@ class ReportController extends Controller
      */
     public function index()
     {
+        
         return view('pages.backsite.operational.report.index');
     }
 

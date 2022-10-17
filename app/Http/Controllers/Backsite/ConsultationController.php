@@ -3,7 +3,18 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+use App\Http\Requests\Consultation\StoreConsultationRequest;
+use App\Http\Requests\Consultation\UpdateConsultationRequest;
+
+// use model here
+use App\Models\MasterData\Consultation;
+
+// use everything here
+use Gate;
+use Auth;
 
 class ConsultationController extends Controller
 {
@@ -24,7 +35,11 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.consultation.index');
+        abort_if(Gate::denies('consultation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $consultation = Consultation::orderBy('created_at', 'desc')->get();
+
+        return view('pages.backsite.master-data.consultation.index', compact('consultation'));
     }
 
     /**
@@ -43,9 +58,16 @@ class ConsultationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConsultationRequest $request)
     {
-        return abort(404);
+        // get all request from frontsite
+        $data = $request->all();
+
+        // store to database
+        $consultation = Consultaion::create($data);
+
+        alert()->success('Success Message','Successfully added new Consultation');
+        return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -54,9 +76,11 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Consultation $consultation)
     {
-        return abort(404);
+        abort_if(Gate::denies('consultation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
     /**
@@ -65,9 +89,15 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Consultation $consultation)
     {
-        return abort(404);
+        abort_if(Gate::denies('consultation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+       // select2 = ascending a to z
+        $consultation = Consultation::orderBy('name', 'asc')->get();
+
+        return view('pages.backsite.master-data.consultation.edit', compact('consultation'));
+    
     }
 
     /**
@@ -77,9 +107,16 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateConsultationRequest $request,Consultation $consultation)
     {
-        return abort(404);
+        // get all request from frontsite
+        $data = $request->all();
+
+        // store to database
+        $consultation = Consultaion::update($data);
+
+        alert()->success('Success Message','Successfully updated new Consultation');
+        return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -88,8 +125,13 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Consultation $consultation)
     {
-        return abort(404);
+        abort_if(Gate::denies('consultation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $consultation->delete();
+
+        alert()->success('Success Message','Successfully deleted consultation');
+        return back();
     }
 }

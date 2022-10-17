@@ -3,7 +3,16 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
+
+// use model here
+use App\Models\MasterData\ConfigPayment;
+// use everything here
+use Gate;
+use Auth;
 
 class ConfigPaymentController extends Controller
 {
@@ -24,7 +33,11 @@ class ConfigPaymentController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.config-payment.index');
+        abort_if(Gate::denies('config_payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $config_payment = ConfigPayment::all();
+
+        return view('pages.backsite.master-data.config-payment.index', compact('config_payment'));
     }
 
     /**
@@ -65,9 +78,11 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ConfigPayment $config_payment)
     {
-        return abort(404);
+        abort_if(Gate::denies('config_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('pages.backsite.master-data.config-payment.edit', compact('config_payment'));
     }
 
     /**
@@ -77,9 +92,16 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateConfigPaymentRequest $request,ConfigPayment $config_payment)
     {
-        return abort(404);
+        // get all request from frontsite
+        $data = $request->all();
+
+        // store to database
+        $config_payment = ConfigPayment::update($data);
+
+        alert()->success('Success Message','Successfully updated new Config payment');
+        return redirect()->route('backsite.config-payment.index');
     }
 
     /**

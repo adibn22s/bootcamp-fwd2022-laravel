@@ -11,10 +11,10 @@ class Permission extends Model
     // use HasFactory;
     use SoftDeletes;
 
-    // Declare:table
+    // declare table
     public $table = 'permission';
 
-    // this fiela must type date yyyy-mm-dd hh-mm-ss
+    // this field must type date yyyy-mm-dd hh:mm:ss
     protected $dates = [
         'created_at',
         'updated_at',
@@ -28,10 +28,17 @@ class Permission extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    // many to many
+    public function role()
+    {
+        return $this->belongsToMany('App\Models\ManagementAccess\Role');
+    }
+
     // one to many
     public function permission_role()
     {
-        // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->hasMany('app\Models\ManagementAccess\PermissionRole.php','permission_id');
+        // 2 parameter (path model, field foreign key)
+        return $this->hasMany('App\Models\ManagementAccess\PermissionRole', 'permission_id');
     }
 }

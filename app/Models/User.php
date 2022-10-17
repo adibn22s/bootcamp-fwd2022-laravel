@@ -18,15 +18,14 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use softDeletes;
 
-
+    use SoftDeletes;
 
     protected $dates = [
         'updated_at',
         'created_at',
         'deleted_at',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     /**
@@ -70,24 +69,28 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    // many to many --- //
+    public function role()
+    {
+        return $this->belongsToMany('App\Models\ManagementAccess\Role');
+    }
+
     // one to many
     public function appointment()
     {
-        // 2 parameters (path models dan field foreign key)
-        return $this->hasMany('app\Models\Operational\Appointment.php','user_id',);
+        // 2 parameter (path model, field foreign key)
+        return $this->hasMany('App\Models\Operational\Appointment', 'user_id');
     }
 
-    // one to one
     public function detail_user()
     {
-        // 2 parameters (path models dan field foreign key)
-        return $this->hasOne('app\Models\ManagementAccess\DetailUser.php','user_id');
+        // 2 parameter (path model, field foreign key)
+        return $this->hasOne('App\Models\ManagementAccess\DetailUser', 'user_id');
     }
 
-    // one to many
     public function role_user()
     {
-        // 2 parameters (path models dan field foreign key)
-        return $this->hasMany('app\Models\ManagementAccess\RoleUser.php','user_id',);
+        // 2 parameter (path model, field foreign key)
+        return $this->hasMany('App\Models\ManagementAccess\RoleUser', 'user_id');
     }
 }

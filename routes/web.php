@@ -19,6 +19,7 @@ use App\Http\Controllers\Backsite\AppointmentBController;
 use App\Http\Controllers\Backsite\DoctorController;
 use App\Http\Controllers\Backsite\ReportController;
 use App\Http\Controllers\Backsite\TransactionController;
+use App\Http\Controllers\Frontsite\SuccessRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,12 @@ Route::group(['prefix' => 'backsite', 'as' => 'backsite.', 'middleware' => ['aut
 
     // transaction
     Route::resource('transaction', TransactionController::class);
+    
+    //success pages
+    Route::resource('successregister', SuccessRegisterController::class);
+
+    // hospital patient
+    Route::resource('hospital-patient', HospitalPatientController::class);
 
     
 

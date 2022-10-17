@@ -3,7 +3,19 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// use model here
+use App\Models\Operational\Appointment;
+use App\Models\Operational\Doctor;
+use App\Models\Operational\Transaction;
+use App\Models\User;
+use App\Models\MasterData\Consultation;
+
+// use everything here
+use Gate;
+use Auth;
 
 class AppointmentBController extends Controller
 {
@@ -24,7 +36,22 @@ class AppointmentBController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.appointment.index');
+
+        $appointment = Appointment::orderBy('created_at','desc' )->get();
+        
+        abort_if(Gate::denies('appointment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $type_user_condition = Auth::user()->detail_user->type_user_id;
+
+        if($type_user_condition == 1){
+            // for admin
+            $appointment = Appointment::orderBy('created_at', 'desc')->get();
+        }else{
+            // other admin for doctor & patient ( task for everyone here )
+            $appointment = Appointment::orderBy('created_at', 'desc')->get();
+        }
+        
+        return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
     /**
@@ -54,9 +81,9 @@ class AppointmentBController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Appointment $appointment)
     {
-        return abort(404);
+        return view('pages.backsite.operational.appointment.show', compact('appointment'));
     }
 
     /**

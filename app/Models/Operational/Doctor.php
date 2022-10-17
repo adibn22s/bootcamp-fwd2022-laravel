@@ -34,13 +34,13 @@ class Doctor extends Model
     public function specialist()
     {
         // 3 parameters (path models ,field foreign key dan field primary key dari tabel hasmany/hasone)
-        return $this->belongsTo('app\Models\MasterData\Specialist.php','specialist_id','id');
+        return $this->belongsTo('App\Models\MasterData\Specialist','specialist_id','id');
     }
 
     // one to many
     public function appointment()
     {
         // 2 parameters (path models dan field foreign key)
-        return $this->hasMany('app\Models\Operational\Appointment.php','doctor_id');
+        return $this->hasMany('App\Models\Operational\Appointment','doctor_id');
     }
 }
